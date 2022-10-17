@@ -27,7 +27,7 @@ function App() {
     y:"30px",
     roomCount: 1,
     inUse: true,
-    Name: "MRI 02",
+    name: "MRI 02",
     inUseBy: "Jack brown",
     timeInUse: "0070",
     bookedUntill: "0050",
@@ -49,7 +49,7 @@ function App() {
   //NOTE
   //Below is two example of how to change the roomStatus 
   //NOTE
-  
+
   //Used to change if a room is in use
   function setRoomUse(name, status) {
     let newRoomStatus = roomStatus;
