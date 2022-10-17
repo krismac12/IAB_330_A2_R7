@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useState, createContext } from "react";
 import PropTypes from "prop-types";
 //import { getImages } from "../../../imagesApi";
 
@@ -8,42 +8,19 @@ import Slide from "./Slide";
 
 export const SliderContext = createContext();
 
-const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
-  const [items, setItems] = useState([1,2]);
+const Slider = function ({graphData, width, height, autoPlay, autoPlayTime }) {
+  
   const [slide, setSlide] = useState(0);
   const [animation, setAnimation] = useState(true);
-
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     const images = await getImages();
-  //     setItems(images);
-  //   };
-  //   loadData();
-  // }, []);
-
-  // const preloadImages = () => {
-  //   const prevItemIndex = slide - 1 < 0 ? items.length - 1 : slide - 1;
-  //   const nextItemIndex = (slide + 1) % items.length;
-
-  //   new Image().src = items[slide].url;
-  //   new Image().src = items[prevItemIndex].url;
-  //   new Image().src = items[nextItemIndex].url;
-  // }
-
-  // useEffect(() => {
-  //   if (items.length) {
-  //     preloadImages();
-  //   }
-  // }, [slide, items])
 
   const changeSlide = (direction = 1) => {
     setAnimation(false);
     let slideNumber = 0;
 
     if (slide + direction < 0) {
-      slideNumber = items.length - 1;
+      slideNumber = graphData.length - 1;
     } else {
-      slideNumber = (slide + direction) % items.length;
+      slideNumber = (slide + direction) % graphData.length;
     }
 
     setSlide(slideNumber);
@@ -59,7 +36,7 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
 
   const goToSlide = (number) => {
     setAnimation(false);
-    setSlide(number % items.length);
+    setSlide(number % graphData.length);
 
     const timeout = setTimeout(() => {
       setAnimation(true);
@@ -70,32 +47,20 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (!autoPlay) return;
-
-  //   const interval = setInterval(() => {
-  //     changeSlide(1);
-  //   }, autoPlayTime);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [items.length, slide]); // when images uploaded or slide changed manually we start timer
-
   return (
     <div style={{ width, height }} className="slider">
       <SliderContext.Provider
         value={{
           goToSlide,
           changeSlide,
-          slidesCount: items.length,
+          slidesCount: graphData.length,
           slideNumber: slide,
         }}
       >
         <Arrows />
         {
-          items.length ? (
-            <Slide data={items[slide]} animation={animation} />
+          graphData.length ? (
+            <Slide data={graphData[slide]} animation={animation} />
           ) : null
         }
       </SliderContext.Provider>

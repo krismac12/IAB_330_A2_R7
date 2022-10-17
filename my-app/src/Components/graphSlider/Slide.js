@@ -13,21 +13,12 @@ import "./slider.scss";
 //     );
 // }
 
-export default function Slide({ data: { url, title }, animation }) {
+export default function Slide({ data: { data, title }, animation }) {
     return (
         <div className={`slide ${animation && 'fadeInAnimation'}`}>
             <Plot
-                data={[
-                    {
-                        x: [1, 2, 3],
-                        y: [2, 6, 3],
-                        type: 'scatter',
-                        mode: 'lines+markers',
-                        marker: { color: 'red' },
-                    },
-                    { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
-                ]}
-                layout={{ width: 350, height: 280, title: 'A Fancy Plot', showlegend: false }}
+                data={[data]}
+                layout={{ width: 350, height: 280, title: title, showlegend: false }}
                 config={{ displayModeBar: false }}
             />
         </div>
