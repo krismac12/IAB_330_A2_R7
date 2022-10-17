@@ -1,5 +1,12 @@
 .layout {
   display: grid;
+  overflow: none;
+  max-width: 390px;
+  max-height: 844px;
+}
+.roomCard{
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 .navBar {
