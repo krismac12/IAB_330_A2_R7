@@ -3,9 +3,25 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useState } from 'react';
-
+import getRoom from "./Server/mainfile";
+import axios from "axios";
 
 function App() {
+
+  var roomName = null;
+  axios.get("https://random-data-api.com/api/v2/users?size=2&is_xml=true")
+  .then(res => {
+      console.log(res)
+      console.log(res.data[0].first_name)
+      const data = res.data[0].first_name
+      console.log(data)
+
+      roomName = data
+  }).catch(err => {
+      console.log(err)
+  })
+
+  console.log(roomName)
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
   const [machineUsage, setMachineUsage] = useState("50")
@@ -28,7 +44,7 @@ function App() {
     roomCount: 1,
     inUse: true,
     name: "MRI 02",
-    inUseBy: "Jack brown",
+    inUseBy: roomName,
     timeInUse: "0070",
     bookedUntill: "0050",
     machines: [{ name: "MRI", inUse: true }]
