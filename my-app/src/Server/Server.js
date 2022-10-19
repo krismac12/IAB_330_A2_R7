@@ -4,12 +4,13 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 
 
-app.use(cors());
-app.use((req, res, next)=>{
-    res.setHeader("Acess-Control-Allow-Origin","*");
-    next();
-});
-app.use(express.json({limit:'10mb'}));
+app.get("/test", function(req,res){
+    res.send("Hello");
+})
+
+app.listen(3001,function(){
+    console.log("Connected to port 3001")
+})
 
 let db = new sqlite3.Database('iotsolution.db', (err)=>{
     if(err) {
@@ -20,10 +21,8 @@ let db = new sqlite3.Database('iotsolution.db', (err)=>{
 
 
 
-
-
-app.get('/getRoom', (req,res) =>{
-    let sql = 'select * from Rooms where roomID = ?';
+app.get('/getRoom', function(req,res) {
+    let sql = 'select * from Rooms where roomID = 1';
     db.get(sql, res.body, (err, row)=>{
         if(err)
         {
@@ -32,7 +31,3 @@ app.get('/getRoom', (req,res) =>{
         res.send(row)
     })
 })
-
-app.get('/bob', (req,res) => "Hello World")
-
-app.listen(5000, () => console.log("Port 5000"));
