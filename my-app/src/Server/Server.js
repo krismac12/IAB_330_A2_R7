@@ -12,7 +12,7 @@ app.listen(3001,function(){
     console.log("Connected to port 3001")
 })
 
-let db = new sqlite3.Database('C:/School/IAB 330/IAB_330_A2_R7/my-app/src/Server/iotsolution.db', (err)=>{
+let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
     if(err) {
         console.log(err.message);
     }
