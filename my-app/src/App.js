@@ -3,14 +3,15 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useState } from 'react';
-import getRoom from "./Server/mainfile";
 import axios from "axios";
+import GetRoom from "./Server/mainfile"
+
 
 function App() {
 
-  var roomName = getRoom();
 
-  console.log(roomName)
+  var roomName1 = GetRoom(1);
+  console.log(roomName1)
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
   const [machineUsage, setMachineUsage] = useState("50")
@@ -33,7 +34,7 @@ function App() {
     roomCount: 1,
     inUse: true,
     name: "MRI 02",
-    inUseBy: roomName,
+    inUseBy: roomName1,
     timeInUse: "0070",
     bookedUntill: "0050",
     machines: [{ name: "MRI", inUse: true }]
