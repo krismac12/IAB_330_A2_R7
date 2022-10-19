@@ -8,18 +8,7 @@ import axios from "axios";
 
 function App() {
 
-  var roomName = null;
-  axios.get("https://random-data-api.com/api/v2/users?size=2&is_xml=true")
-  .then(res => {
-      console.log(res)
-      console.log(res.data[0].first_name)
-      const data = res.data[0].first_name
-      console.log(data)
-
-      roomName = data
-  }).catch(err => {
-      console.log(err)
-  })
+  var roomName = getRoom();
 
   console.log(roomName)
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
