@@ -27,12 +27,12 @@ let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
 
 
 
-app.get('/getRoom', function(req,res) {
+app.get('/getRoom', function(req,res,roomID) {
     let sql = 'select * from Rooms where roomID = 1';
     db.get(sql, res.body, (err, row)=>{
         if(err)
         {
-            return console.error(err.message);
+            return console.error(err);
         }
         res.send(row)
     })

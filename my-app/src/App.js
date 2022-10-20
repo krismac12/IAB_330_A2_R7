@@ -10,7 +10,7 @@ import GetRoom from "./Server/mainfile"
 function App() {
 
 
-  var roomName1 = GetRoom(1);
+  let roomName1 = GetRoom("1");
   console.log(roomName1)
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
@@ -22,7 +22,7 @@ function App() {
     y:"30px",
     roomCount: 0,
     inUse: false,
-    name: "MRI 01",
+    name: "MRI 0123121",
     inUseBy: null,
     timeInUse: null,
     bookedUntill: null,
@@ -35,7 +35,7 @@ function App() {
     inUse: true,
     name: "MRI 02",
     inUseBy: roomName1,
-    timeInUse: "0070",
+    timeInUse: roomName1,
     bookedUntill: "0050",
     machines: [{ name: "MRI", inUse: true }]
   }
