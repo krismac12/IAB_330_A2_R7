@@ -11,7 +11,7 @@ function App() {
 
 
   let roomName1 = GetRoom("1");
-  console.log(roomName1)
+
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
   const [machineUsage, setMachineUsage] = useState("50")
@@ -34,8 +34,8 @@ function App() {
     roomCount: 1,
     inUse: true,
     name: "MRI 02",
-    inUseBy: roomName1,
-    timeInUse: roomName1,
+    inUseBy: "Jack Black",
+    timeInUse: "10",
     bookedUntill: "0050",
     machines: [{ name: "MRI", inUse: true }]
   }
@@ -70,8 +70,15 @@ function App() {
     newRoomStatus[roomID].inUse = count
     setRoomStatus(newRoomStatus)
   }
-
-
+  //Used to change the number of people in a room
+  function setRoomName(name, count) {
+      let newRoomStatus = JSON.parse(JSON.stringify(roomStatus));
+      let roomID = findRoomByName(name)
+      newRoomStatus[roomID].name = count
+      setRoomStatus(newRoomStatus)
+    }
+  
+  setRoomName("MRI 02", roomName1);
   return (
     <Routes>
       <Route path="/" element={<HomePage graphData={graphData} roomStatus={roomStatus} roomUsage={roomUsage} machineUsage={machineUsage} />} />
