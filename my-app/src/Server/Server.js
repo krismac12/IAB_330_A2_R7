@@ -27,8 +27,41 @@ let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
 
 
 
-app.get('/getRoom', function(req,res,roomID) {
-    let sql = 'select * from Rooms where roomID = 1';
+app.get('/getRoom', function(req,res) {
+    let sql = 'select * from Rooms';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getCamera', function(req,res) {
+    let sql = 'select * from Cameras';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getMachine', function(req,res) {
+    let sql = 'select * from Machines where MachineID = 1';
+    db.get(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getPatient', function(req,res) {
+    let sql = 'select * from Patien where PatientID = 1';
     db.get(sql, res.body, (err, row)=>{
         if(err)
         {

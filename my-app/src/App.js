@@ -4,14 +4,15 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useState } from 'react';
 import axios from "axios";
-import GetRoom from "./Server/mainfile"
+import { GetRoom, GetCameraName } from "./Server/mainfile"
 
 
 function App() {
 
 
-  let roomName1 = GetRoom("1");
-
+  let roomName1 = GetRoom(1);
+  let camera1Name = GetCameraName(1);
+  console.log(camera1Name)
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
   const [machineUsage, setMachineUsage] = useState("50")
@@ -78,7 +79,6 @@ function App() {
       setRoomStatus(newRoomStatus)
     }
   
-  setRoomName("MRI 02", roomName1);
   return (
     <Routes>
       <Route path="/" element={<HomePage graphData={graphData} roomStatus={roomStatus} roomUsage={roomUsage} machineUsage={machineUsage} />} />
