@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-//import { GetRoom, GetCameraName } from "./Server/mainfile"
+import { GetRoom, GetCameraName } from "./Server/mainfile"
 
 
 let roomNames = [];
@@ -41,19 +41,6 @@ function App() {
     machines: [{ name: "MRI", inUse: true }]
   }
   ])
-
-  function GetRoom(id){
-    const[roomName , setRoomName] = useState('');
-  
-    useEffect(() => {
-      axios.get("http://localhost:3001/getRoom").then(response => {
-        setRoomName(response.data[id].name);
-        setLoading(false);
-      });
-    }, []);
-  
-    return roomName
-  }
   //Finds room by name
   function FindRoomByName(name) {
     for (let i = 0; i < roomStatus.length; i++) {
@@ -102,7 +89,7 @@ function App() {
     setRoomStatus(newRoomStatus)
   }
   let roomName1 = null;
-  roomName1 = GetRoom(0)
+  roomName1 = GetRoom(1)
   console.log(roomName1)
   
   if (roomName1 !== "") {
@@ -110,7 +97,7 @@ function App() {
   }
 
   let roomName2 = null;
-  roomName2 = GetRoom(1)
+  roomName2 = GetRoom(2)
   if (roomName2 !== "") {
     setRoomName("MRI 02" ,  roomName2)
   }

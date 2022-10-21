@@ -11,13 +11,7 @@ export  function GetRoom(id){
         console.log(err)
     })
 
-    return new Promise((resolve, reject) => {
-        if (true) {
-          resolve(roomName);
-        } else {
-          reject("Promise rejected");
-        }
-      });
+    return roomName
   }
 
   export  function GetCameraName(id){
