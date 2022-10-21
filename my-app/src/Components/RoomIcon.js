@@ -12,7 +12,6 @@ export default function RoomIcon(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    let roomName = "MRI 01"
     //Updates the colour of the room status to show if its in use or not
     useEffect(() => {
         setStatus(roomStatus.inUse ? "#FF0000" : "#D9FD00")
@@ -29,7 +28,7 @@ export default function RoomIcon(props) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{roomName}</Modal.Title>
+                    <Modal.Title>{roomStatus.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <RoomInfo roomStatus={roomStatus}></RoomInfo>

@@ -18,16 +18,17 @@ app.listen(3001,function(){
     console.log("Connected to port 3001")
 })
 
-let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
-    if(err) {
-        console.log(err.message);
-    }
-    console.log("connected");
-})
+
 
 
 
 app.get('/getRoom', function(req,res) {
+    let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
+        if(err) {
+            console.log(err.message);
+        }
+        console.log("connected");
+    })
     let sql = 'select * from Rooms';
     db.all(sql, res.body, (err, row)=>{
         if(err)
@@ -36,6 +37,7 @@ app.get('/getRoom', function(req,res) {
         }
         res.send(row)
     })
+    db.close()
 })
 
 app.get('/getCamera', function(req,res) {
