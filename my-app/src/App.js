@@ -2,7 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 function App() {
@@ -12,8 +12,8 @@ function App() {
 
   //The x and y is used to tell the app where the room is on the map
   const [roomStatus, setRoomStatus] = useState([{
-    x:"50px",
-    y:"30px",
+    x: "50px",
+    y: "30px",
     roomCount: 0,
     inUse: false,
     name: "MRI 01",
@@ -23,8 +23,8 @@ function App() {
     machines: [{ name: "MRI", inUse: false }]
   },
   {
-    x:"140px",
-    y:"30px",
+    x: "140px",
+    y: "30px",
     roomCount: 1,
     inUse: true,
     name: "MRI 02",
@@ -36,15 +36,16 @@ function App() {
   ])
 
   //Finds room by name
-  function findRoomByName(name){
-    let index = 0;
-    roomStatus.forEach(e => {
-      if(e.name === name){
-        return index
+  function FindRoomByName(name) {
+    for (let i = 0; i < roomStatus.length; i++) {
+      if (roomStatus[i].name == name) {
+        return i
       }
-      index++
-    });
+
+    }
+    return null
   }
+
 
   //NOTE
   //Below is two example of how to change the roomStatus 
@@ -52,19 +53,42 @@ function App() {
 
   //Used to change if a room is in use
   function setRoomUse(name, status) {
-    let newRoomStatus = roomStatus;
-    let roomID = findRoomByName(name)
+    let newRoomStatus = JSON.parse(JSON.stringify(roomStatus))
+    let roomID = FindRoomByName(name)
+    if (roomID === null) {
+      return
+    }
     newRoomStatus[roomID].inUse = status
     setRoomStatus(newRoomStatus)
   }
   //Used to change the number of people in a room
   function setRoomCount(name, count) {
-    let newRoomStatus = roomStatus;
-    let roomID = findRoomByName(name)
+    let newRoomStatus = JSON.parse(JSON.stringify(roomStatus))
+    let roomID = FindRoomByName(name)
+    if (roomID === null) {
+      return
+    }
     newRoomStatus[roomID].inUse = count
     setRoomStatus(newRoomStatus)
   }
 
+  //Used to change the number of people in a room
+  function setRoomName(name, newName) {
+    let newRoomStatus = JSON.parse(JSON.stringify(roomStatus))
+    let roomID = FindRoomByName(name)
+    if (roomID === null) {
+      return
+    }
+    newRoomStatus[roomID].name = newName
+    setRoomStatus(newRoomStatus)
+  }
+    useEffect(() => {
+      setRoomName("MRI 02", "MRI 03")
+     
+    }, [])
+
+
+  
 
   return (
     <Routes>
