@@ -3,9 +3,16 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import { GetRoom, GetCameraName } from "./Server/mainfile"
+
+
+let roomNames = [];
+
 
 
 function App() {
+  const [isLoading, setLoading] = useState('');
   const [graphData, setGraphData] = useState([{ data: { type: 'bar', x: ["jan", "april", "july", "october"], y: [25, 61, 83, 28] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }])
   const [roomUsage, setRoomUsage] = useState("50")
   const [machineUsage, setMachineUsage] = useState("50")
@@ -34,7 +41,6 @@ function App() {
     machines: [{ name: "MRI", inUse: true }]
   }
   ])
-
   //Finds room by name
   function FindRoomByName(name) {
     for (let i = 0; i < roomStatus.length; i++) {
@@ -82,11 +88,19 @@ function App() {
     newRoomStatus[roomID].name = newName
     setRoomStatus(newRoomStatus)
   }
-    useEffect(() => {
-      setRoomName("MRI 02", "MRI 03")
-     
-    }, [])
+  let roomName1 = null;
+  roomName1 = GetRoom(1)
+  console.log(roomName1)
+  
+  if (roomName1 !== "") {
+    setRoomName("MRI 01" ,  roomName1)
+  }
 
+  let roomName2 = null;
+  roomName2 = GetRoom(2)
+  if (roomName2 !== "") {
+    setRoomName("MRI 02" ,  roomName2)
+  }
 
   
 
