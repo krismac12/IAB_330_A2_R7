@@ -10,27 +10,65 @@ app.use((req, res, next)=>{
 });
 app.use(express.json({limit:'10mb'}));
 
-let db = new sqlite3.Database('iotsolution.db', (err)=>{
-    if(err) {
-        console.log(err.message);
-    }
-    console.log("connected");
+app.get("/test", function(req,res){
+    res.send("Hello");
+})
+
+app.listen(3001,function(){
+    console.log("Connected to port 3001")
 })
 
 
 
 
 
-app.post('/getRoom', (req,res) =>{
-    let sql = 'select * from Rooms where roomID = ?';
-    db.get(sql, res.body, (err, row)=>{
+app.get('/getRoom', function(req,res) {
+    let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
+        if(err) {
+            console.log(err.message);
+        }
+        console.log("connected");
+    })
+    let sql = 'select * from Rooms';
+    db.all(sql, res.body, (err, row)=>{
         if(err)
         {
-            return console.error(err.message);
+            return console.error(err);
         }
-        return row
+        res.send(row)
+    })
+    db.close()
+})
+
+app.get('/getCamera', function(req,res) {
+    let sql = 'select * from Cameras';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
     })
 })
 
+app.get('/getMachine', function(req,res) {
+    let sql = 'select * from Machines where MachineID = 1';
+    db.get(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
 
-app.listen(2100, () => console.log("Port 2100"));
+app.get('/getPatient', function(req,res) {
+    let sql = 'select * from Patien where PatientID = 1';
+    db.get(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
