@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { GetRoom, GetCameraName } from "./Server/mainfile"
+import { GetRoom, GetCamera,GetMachine } from "./Server/mainfile"
 
 
 let roomNames = [];
@@ -102,6 +102,12 @@ function App() {
     setRoomName("MRI 02" ,  roomName2)
   }
 
+
+  let camera1 = GetCamera(1)
+  console.log(camera1.name)
+
+  let machine1 = GetMachine(1)
+  console.log(machine1.name)
   
 
   return (
