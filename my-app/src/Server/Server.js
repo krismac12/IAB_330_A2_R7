@@ -20,15 +20,14 @@ app.listen(3001,function(){
 
 
 
-
+let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
+    if(err) {
+        console.log(err.message);
+    }
+    console.log("connected");
+})
 
 app.get('/getRoom', function(req,res) {
-    let db = new sqlite3.Database('./src/Server/iotsolution.db', (err)=>{
-        if(err) {
-            console.log(err.message);
-        }
-        console.log("connected");
-    })
     let sql = 'select * from Rooms';
     db.all(sql, res.body, (err, row)=>{
         if(err)
@@ -37,7 +36,6 @@ app.get('/getRoom', function(req,res) {
         }
         res.send(row)
     })
-    db.close()
 })
 
 app.get('/getCamera', function(req,res) {
@@ -52,8 +50,8 @@ app.get('/getCamera', function(req,res) {
 })
 
 app.get('/getMachine', function(req,res) {
-    let sql = 'select * from Machines where MachineID = 1';
-    db.get(sql, res.body, (err, row)=>{
+    let sql = 'select * from Machines';
+    db.all(sql, res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);
@@ -63,8 +61,52 @@ app.get('/getMachine', function(req,res) {
 })
 
 app.get('/getPatient', function(req,res) {
-    let sql = 'select * from Patien where PatientID = 1';
-    db.get(sql, res.body, (err, row)=>{
+    let sql = 'select * from Patient';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getMachineHistory', function(req,res) {
+    let sql = 'select * from MachinesHistory ';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getRFIDHistory', function(req,res) {
+    let sql = 'select * from RFIDHistory ';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getRFIDList', function(req,res) {
+    let sql = 'select * from RFIDList ';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
+app.get('/getStaff', function(req,res) {
+    let sql = 'select * from Staff ';
+    db.all(sql, res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);
