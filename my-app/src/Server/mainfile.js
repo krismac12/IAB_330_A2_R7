@@ -53,7 +53,7 @@ export  function GetRoom(id){
     const[name , setName] = useState(null);
     const[roomID , setRoomID] = useState(null);
     const[status , setStatus] = useState(null);
-    const getCamera =  axios.get("http://localhost:3001/getMachine")
+    const getMachine =  axios.get("http://localhost:3001/getMachine")
     .then(res => {
         setName(res.data[id-1].Name)
         setID(res.data[id-1].MachineID)
@@ -68,4 +68,47 @@ export  function GetRoom(id){
     Machine.roomID = roomID;
     Machine.status = status;
     return Machine
+  }
+
+  export  function GetPatient(id){
+    let patient = {
+        ID: 0,
+        FirstName: "",
+        LastName: "",
+        RFID: 0
+    }
+    const[ID , setID] = useState(null);
+    const[FirstName , setFirstName] = useState(null);
+    const[LastName , setLastName] = useState(null);
+    const[RFID , setRFID] = useState(null);
+    const getPatient =  axios.get("http://localhost:3001/getPatient")
+    .then(res => {
+        setFirstName(res.data[id-1].FirstName)
+        setID(res.data[id-1].PatientID)
+        setLastName(res.data[id-1].LastName)
+        setRFID(res.data[id-1].RFID)
+    }).catch(err => {
+        console.log(err)
+    })
+    
+    patient.ID = ID;
+    patient.FirstName = FirstName;
+    patient.LastName = LastName;
+    patient.RFID = RFID;
+    return patient
+  }
+
+
+  export function GetRFIDHistory(id){
+
+    var History = [];
+    const [data,SetData] = useState([]);
+    let getHistory = axios.get("http://localhost:3001/getRFIDHistory/"+ id)
+    .then(res => {
+       SetData(res.data)
+    }).catch(err => {
+        console.log(err)
+    })
+    History = data
+    return History
   }

@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { GetRoom, GetCamera,GetMachine } from "./Server/mainfile"
+import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory } from "./Server/mainfile"
 
 
 let roomNames = [];
@@ -103,12 +103,14 @@ function App() {
   }
 
 
-  let camera1 = GetCamera(1)
-  console.log(camera1.name)
+  let room1History = GetRFIDHistory(1);
+  let Patient = GetPatient(1);
+  console.log(room1History)
 
-  let machine1 = GetMachine(1)
-  console.log(machine1.name)
-  
+  if(Patient.FirstName != null)
+  {
+    console.log(Patient)
+  }  
 
   return (
     <Routes>

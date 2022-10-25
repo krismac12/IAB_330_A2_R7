@@ -82,9 +82,10 @@ app.get('/getMachineHistory', function(req,res) {
     })
 })
 
-app.get('/getRFIDHistory', function(req,res) {
-    let sql = 'select * from RFIDHistory ';
-    db.all(sql, res.body, (err, row)=>{
+app.get('/getRFIDHistory/:RoomID', function(req,res) {
+    let sql = 'select * from RFIDHistory where RoomID = ?';
+    var params = [req.params.RoomID]
+    db.all(sql,params, res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);
