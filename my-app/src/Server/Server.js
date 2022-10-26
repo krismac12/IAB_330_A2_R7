@@ -71,9 +71,10 @@ app.get('/getPatient', function(req,res) {
     })
 })
 
-app.get('/getMachineHistory', function(req,res) {
-    let sql = 'select * from MachinesHistory ';
-    db.all(sql, res.body, (err, row)=>{
+app.get('/getMachineHistory/:MachineID', function(req,res) {
+    let sql = 'select * from MachinesHistory where MachineID = ?';
+    var params = [req.params.MachineID]
+    db.all(sql,params,res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);

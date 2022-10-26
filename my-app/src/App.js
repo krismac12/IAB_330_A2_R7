@@ -4,12 +4,12 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory } from "./Server/mainfile"
+import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory } from "./Server/mainfile"
 
 
-let roomNames = [];
 var count = 0;
-function getRoomUsage(History,date){
+
+function getUsage(History,date){
     var roomUsage = 0;
     var hours = [];
     for(let i = 0; i < History.length;i++){
@@ -37,6 +37,7 @@ function getRoomUsage(History,date){
 
 }
 
+
 function App() {
   var yesterday = new Date();
   var twoDaysAgo = new Date();
@@ -60,8 +61,6 @@ function App() {
     inUse: false,
     name: "MRI 01",
     inUseBy: null,
-    timeInUse: null,
-    bookedUntill: null,
     machines: [{ name: "MRI", inUse: false }]
   },
   {
@@ -71,8 +70,6 @@ function App() {
     inUse: true,
     name: "MRI 02",
     inUseBy: "Jack brown",
-    timeInUse: "0070",
-    bookedUntill: "0050",
     machines: [{ name: "MRI", inUse: true }]
   }
   ])
@@ -125,7 +122,6 @@ function App() {
   }
   let roomName1 = null;
   roomName1 = GetRoom(1)
-  console.log(roomName1)
   
   if (roomName1 !== "") {
     setRoomName("MRI 01" ,  roomName1)
@@ -138,14 +134,14 @@ function App() {
   }
 
 
-  let room1History = GetRFIDHistory(1);
+  let room1History = GetRFIDHistory(1)
   var room1Usage1 = 0;
   var room1Usage2 = 0;
   var room1Usage3 = 0;
   if(room1History.length != 0){
-    room1Usage1 = getRoomUsage(room1History,twoDaysAgo)
-    room1Usage2 = getRoomUsage(room1History,yesterday)
-    room1Usage3 = getRoomUsage(room1History,today)
+    room1Usage1 = getUsage(room1History,twoDaysAgo)
+    room1Usage2 = getUsage(room1History,yesterday)
+    room1Usage3 = getUsage(room1History,today)
     
   }
 
@@ -154,9 +150,9 @@ function App() {
   var room2Usage2 = 0;
   var room2Usage3 = 0;
   if(room2History.length != 0){
-    room2Usage1 = getRoomUsage(room2History,twoDaysAgo)
-    room2Usage2 = getRoomUsage(room2History,yesterday)
-    room2Usage3 = getRoomUsage(room2History,today)
+    room2Usage1 = getUsage(room2History,twoDaysAgo)
+    room2Usage2 = getUsage(room2History,yesterday)
+    room2Usage3 = getUsage(room2History,today)
   }
 
   let room3History = GetRFIDHistory(2);
@@ -164,40 +160,59 @@ function App() {
   var room3Usage2 = 0;
   var room3Usage3 = 0;
   if(room3History.length != 0){
-    room3Usage1 = getRoomUsage(room3History,twoDaysAgo)
-    room3Usage2 = getRoomUsage(room3History,yesterday)
-    room3Usage3 = getRoomUsage(room3History,today)
+    room3Usage1 = getUsage(room3History,twoDaysAgo)
+    room3Usage2 = getUsage(room3History,yesterday)
+    room3Usage3 = getUsage(room3History,today)
   }
 
 
-  function SetData(graphData,roomUsage){
+  
+  let machine1History = GetMachineHistory(1)
+  var machine1Usage = 0;
+
+  if(machine1History.length != 0){
+    machine1Usage = getUsage(machine1History,today)
+    
+  }
+
+  let machine2History = GetMachineHistory(2)
+  var machine2Usage = 0;
+
+  if(machine2History.length != 0){
+    machine2Usage = getUsage(machine2History,today)
+    
+  }
+
+  let machine3History = GetMachineHistory(1)
+  var machine3Usage = 0;
+
+  if(machine3History.length != 0){
+    machine3Usage = getUsage(machine3History,today)
+    
+  }
+  // Function to set graph data machine usage and room usage
+  function SetData(graphData,roomUsage,machineUsage){
     count++
     if(count < 5)
     {
       setGraphData(graphData)
       setRoomUsage(roomUsage)
+      setMachineUsage(machineUsage)
     }
 
   }
 
 
-  if(room3History.length != 0 && count < 100)
+  if(machine3History.length != 0)
   {
-    var Usage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1)/3)
-    var Usage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2)/3)
-    var Usage3 = Math.round((room1Usage3 + room2Usage3 + room3Usage3)/3)
-    let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [Usage1, Usage2, Usage3] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }]
-    SetData(graphData,Usage3)
-    console.log("test")
+    var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1)/3)
+    var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2)/3)
+    var roomUsage3 = Math.round((room1Usage3 + room2Usage3 + room3Usage3)/3)
+    var MachineUsage = Math.round((machine1Usage + machine2Usage + machine3Usage)/3)
+    let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [roomUsage1, roomUsage2, roomUsage3] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }]
+    SetData(graphData,roomUsage3,MachineUsage)
   }
 
-
-  let Patient = GetPatient(1);
-
-  if(Patient.FirstName != null)
-  {
-    console.log(Patient)
-  }  
   return (
     <Routes>
       <Route path="/" element={<HomePage graphData={graphData} roomStatus={roomStatus} roomUsage={roomUsage} machineUsage={machineUsage} />} />

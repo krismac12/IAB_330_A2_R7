@@ -9,9 +9,8 @@ export default function RoomInfo(props) {
       <div className="grid-container">
         {roomStatus.inUse === true &&
           <>
+            <p>Unavailable</p>
             <p>In use by: {roomStatus.inUseBy}</p>
-            <p>Time in use: {roomStatus.timeInUse}</p>
-            <p>Booked untill: {roomStatus.bookedUntill}</p>
           </>
         }
         {roomStatus.inUse === false &&

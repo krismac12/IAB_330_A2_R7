@@ -112,3 +112,18 @@ export  function GetRoom(id){
     History = data
     return History
   }
+
+  export function GetMachineHistory(id){
+
+    var History = [];
+    const [data,SetData] = useState([]);
+    let getHistory = axios.get("http://localhost:3001/getMachineHistory/"+ id)
+    .then(res => {
+       SetData(res.data)
+    }).catch(err => {
+        console.log(err)
+    })
+    History = data
+    return History
+  }
+  
