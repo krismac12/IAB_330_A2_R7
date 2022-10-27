@@ -95,9 +95,10 @@ app.get('/getRFIDHistory/:RoomID', function(req,res) {
     })
 })
 
-app.get('/getRFIDList', function(req,res) {
-    let sql = 'select * from RFIDList ';
-    db.all(sql, res.body, (err, row)=>{
+app.get('/getRoomStatus/:roomID', function(req,res) {
+    let sql = 'select * from RFIDList where roomID = ?';
+    var params = [req.params.roomID]
+    db.get(sql,params, res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);
@@ -106,9 +107,10 @@ app.get('/getRFIDList', function(req,res) {
     })
 })
 
-app.get('/getStaff', function(req,res) {
-    let sql = 'select * from Staff ';
-    db.all(sql, res.body, (err, row)=>{
+app.get('/getStaff/:RFID', function(req,res) {
+    let sql = 'select * from Staff where RFID = ?';
+    var params = [req.params.RFID]
+    db.all(sql, params,res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);

@@ -141,3 +141,25 @@ export  function GetRoom(id){
     return History
   }
   
+
+  export function GetRoomStatus(roomID){
+    const[RFID , setRFID] = useState(null);
+    let getHistory = axios.get("http://localhost:3001/getRoomStatus/" + roomID)
+    .then(res => {
+        setRFID(res.data.RFID)
+    }).catch(err => {
+        console.log(err)
+    })
+    return RFID
+  }
+
+  export function GetStaff(RFID){
+    const[FullName , setName] = useState(null);
+    let getHistory = axios.get("http://localhost:3001/getStaff/" + RFID)
+    .then(res => {
+        setName(res.data.FirstName + " " + res.data.LastName)
+    }).catch(err => {
+        console.log(err)
+    })
+    return FullName
+  }

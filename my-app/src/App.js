@@ -4,11 +4,19 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory,GetBookings } from "./Server/mainfile"
+import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory,GetBookings, GetRoomStatus, GetStaff } from "./Server/mainfile"
 
 
 var count = 0;
+var count2 = 0;
 
+function getStaffName(RFID)
+{
+  let staff = null
+  staff = GetStaff(RFID)
+
+  return staff;
+}
 function getUsage(History,date){
     var roomUsage = 0;
     var hours = [];
@@ -89,9 +97,9 @@ function App() {
     x: "140px",
     y: "30px",
     roomCount: 1,
-    inUse: true,
+    inUse: false,
     name: "MRI 02",
-    inUseBy: "Jack brown",
+    inUseBy: null,
     machines: [{ name: "MRI", inUse: true }]
   }
   ])
@@ -112,14 +120,18 @@ function App() {
   //NOTE
 
   //Used to change if a room is in use
-  function setRoomUse(name, status) {
+  function setRoomUse(name, status,staff) {
     let newRoomStatus = JSON.parse(JSON.stringify(roomStatus))
     let roomID = FindRoomByName(name)
     if (roomID === null) {
       return
     }
+    if(count2 < 5){
     newRoomStatus[roomID].inUse = status
+    newRoomStatus[roomID].inUseBy = staff
     setRoomStatus(newRoomStatus)
+    }
+    count2++
   }
   //Used to change the number of people in a room
   function setRoomCount(name, count) {
@@ -149,12 +161,15 @@ function App() {
     setRoomName("MRI 01" ,  roomName1)
   }
 
+
+  //setRoomUse(roomName1,room1status,staff)
+
+
   let roomName2 = null;
   roomName2 = GetRoom(2)
   if (roomName2 !== "") {
     setRoomName("MRI 02" ,  roomName2)
   }
-
 
   let room1History = GetRFIDHistory(1)
   var room1Usage1 = 0;
@@ -212,6 +227,22 @@ function App() {
     machine3Usage = getUsage(machine3History,today)
     
   }
+
+
+  let rfid1 = GetRoomStatus(1)
+  console.log(rfid1)
+  if(rfid1 != null || rfid1 != undefined){
+    let roomstatus = true;
+    setRoomUse(roomName1,roomstatus)
+  }
+
+  let rfid2 = GetRoomStatus(2)
+  console.log(rfid1)
+  if(rfid2 != null || rfid2 != undefined){
+    let roomstatus = true;
+    setRoomUse(roomName2,roomstatus)
+  }
+
 
 
   // Function to set graph data machine usage and room usage
