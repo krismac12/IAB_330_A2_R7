@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory } from "./Server/mainfile"
+import { GetRoom, GetCamera,GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory,GetBookings } from "./Server/mainfile"
 
 
 var count = 0;
@@ -37,6 +37,28 @@ function getUsage(History,date){
 
 }
 
+function getBookingNO(History,date){
+  var bookings = 0;
+  for(let i = 0; i < History.length;i++){
+
+    let d2 = new Date(date)
+    const d1 = new Date(History[i].Timestamp)
+    let year1 = d1.getFullYear()
+    let month1 = d1.getMonth()
+    let day1 = d1.getDate();
+    let year2 = d2.getFullYear()
+    let month2 = d2.getMonth()
+    let day2 = d2.getDate();
+    let hour = d1.getHours();
+    
+    if(year1 === year2 &&
+    month1 === month2 &&
+    day1 === day2){
+      bookings++
+    }
+  }
+  return bookings
+}
 
 function App() {
   var yesterday = new Date();
@@ -190,6 +212,8 @@ function App() {
     machine3Usage = getUsage(machine3History,today)
     
   }
+
+
   // Function to set graph data machine usage and room usage
   function SetData(graphData,roomUsage,machineUsage){
     count++
@@ -202,14 +226,20 @@ function App() {
 
   }
 
+  var RFIDHistory = GetBookings()
 
-  if(machine3History.length != 0)
+  if(RFIDHistory.length != 0)
   {
     var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1)/3)
     var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2)/3)
     var roomUsage3 = Math.round((room1Usage3 + room2Usage3 + room3Usage3)/3)
     var MachineUsage = Math.round((machine1Usage + machine2Usage + machine3Usage)/3)
-    let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [roomUsage1, roomUsage2, roomUsage3] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: ["mon", "tue", "wed", "thur"], y: [44, 46, 55, 70] }, title: "Bookings Per Day" }]
+    var NoBookings1 = getBookingNO(RFIDHistory,twoDaysAgo)
+    var NoBookings2 = getBookingNO(RFIDHistory,yesterday)
+    var NoBookings3 = getBookingNO(RFIDHistory,today)
+
+    let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [roomUsage1, roomUsage2, roomUsage3] }, title: "Overall Room Usage" }, { data: { type: 'bar', x: 
+    [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [NoBookings1, NoBookings2, NoBookings3] }, title: "Bookings Per Day" }]
     SetData(graphData,roomUsage3,MachineUsage)
   }
 

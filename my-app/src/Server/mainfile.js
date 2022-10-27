@@ -126,4 +126,18 @@ export  function GetRoom(id){
     History = data
     return History
   }
+
+  export function GetBookings(){
+
+    var History = [];
+    const [data,SetData] = useState([]);
+    let getHistory = axios.get("http://localhost:3001/getBookings")
+    .then(res => {
+       SetData(res.data)
+    }).catch(err => {
+        console.log(err)
+    })
+    History = data
+    return History
+  }
   

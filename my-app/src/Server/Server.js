@@ -116,3 +116,15 @@ app.get('/getStaff', function(req,res) {
         res.send(row)
     })
 })
+
+
+app.get('/getBookings', function(req,res) {
+    let sql = 'select * from RFIDHistory where EventType = 1';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
