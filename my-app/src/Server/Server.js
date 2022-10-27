@@ -34,9 +34,21 @@ app.get('/getRoom', function(req,res) {
         {
             return console.error(err);
         }
+        console.log(row)
         res.send(row)
     })
 })
+app.get('/getRoomStatus/', function(req,res) {
+    let sql = 'select * from RFIDList where roomID IS NOT NULL';
+    db.all(sql, res.body, (err, row)=>{
+        if(err)
+        {
+            return console.error(err);
+        }
+        res.send(row)
+    })
+})
+
 
 app.get('/getCamera', function(req,res) {
     let sql = 'select * from Cameras';
@@ -95,17 +107,6 @@ app.get('/getRFIDHistory/:RoomID', function(req,res) {
     })
 })
 
-app.get('/getRoomStatus/:roomID', function(req,res) {
-    let sql = 'select * from RFIDList where roomID = ?';
-    var params = [req.params.roomID]
-    db.get(sql,params, res.body, (err, row)=>{
-        if(err)
-        {
-            return console.error(err);
-        }
-        res.send(row)
-    })
-})
 
 app.get('/getStaff/:RFID', function(req,res) {
     let sql = 'select * from Staff where RFID = ?';
