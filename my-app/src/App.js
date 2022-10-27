@@ -167,6 +167,9 @@ function App() {
       let roomNames = await GetRoom();
 
       let inUse = await GetRoomStatus()
+      let cameras = await GetCamera()
+      let machines = await GetMachine()
+      console.log(cameras)
       console.log(roomNames)
       //Adds 
       let i = 0;
@@ -178,6 +181,20 @@ function App() {
       inUse.forEach(e => {
         roomStorage[e.roomID - 1].inUse = true
       });
+
+      cameras.forEach(e => {
+        roomStorage[e.roomID - 1].roomCount = e.numDetected
+      });
+
+      machines.forEach(e => {
+        let use = false
+        if(e.Status == 1){
+          use = true
+        }
+        let machine = { name: e.Name, inUse: use }
+        roomStorage[e.roomID - 1].machines.push(machine)
+      });
+
       setRoomStatus(roomStorage)
 
 
@@ -241,6 +258,7 @@ function App() {
   
   
       var RFIDHistory = await GetBookings()
+      console.log(RFIDHistory)
       if (RFIDHistory.length != 0) {
         var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1) / 3)
         var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2) / 3)

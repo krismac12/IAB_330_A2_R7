@@ -10,6 +10,8 @@ export default function RoomInfo(props) {
         {roomStatus.inUse === true &&
           <>
             <p>Unavailable</p>
+            <p>In use by: {roomStatus.inUseBy}</p>
+            <p>People in room: {roomStatus.roomCount}</p>
           </>
         }
         {roomStatus.inUse === false &&
