@@ -8,7 +8,7 @@ export default function ToomsTableItem(props) {
     return (
         <div style={{ display: "grid", gridTemplateColumns: "85% 15%"}}>
             {roomName}
-            {inUse ? <img src={tickBox} alt={tickBox}></img> : <img src={crossedBox} alt={crossedBox}></img>}
+            {inUse ? <img src={crossedBox} alt={crossedBox}></img> : <img src={tickBox} alt={tickBox}></img>}
         </div>
     )
 }
