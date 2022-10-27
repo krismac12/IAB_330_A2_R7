@@ -154,6 +154,8 @@ function App() {
     newRoomStatus[roomID].name = newName
     setRoomStatus(newRoomStatus)
   }
+  setInterval(() => {
+    console.log('Interval triggered');
   let roomName1 = null;
   roomName1 = GetRoom(1)
   
@@ -273,7 +275,7 @@ function App() {
     [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth()+1), yesterday.getDate() + "/" + (yesterday.getMonth()+1), today.getDate() + "/" + (today.getUTCMonth()+1)], y: [NoBookings1, NoBookings2, NoBookings3] }, title: "Bookings Per Day" }]
     SetData(graphData,roomUsage3,MachineUsage)
   }
-
+  }, 1000);
   return (
     <Routes>
       <Route path="/" element={<HomePage graphData={graphData} roomStatus={roomStatus} roomUsage={roomUsage} machineUsage={machineUsage} />} />
