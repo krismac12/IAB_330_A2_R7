@@ -34,7 +34,6 @@ app.get('/getRoom', function(req,res) {
         {
             return console.error(err);
         }
-        console.log(row)
         res.send(row)
     })
 })
@@ -128,6 +127,7 @@ app.get('/getBookings', function(req,res) {
         {
             return console.error(err);
         }
+
         res.send(row)
     })
 })

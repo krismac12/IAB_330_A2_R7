@@ -141,7 +141,8 @@ function App() {
 
   // Function to set graph data machine usage and room usage
   function SetData(graphData, roomUsage, machineUsage) {
-    count++
+    setCount(count+ 1)
+    console.log(graphData +" " + roomUsage +" " + machineUsage)
     if (count < 5) {
       setGraphData(graphData)
       setRoomUsage(roomUsage)
@@ -178,123 +179,93 @@ function App() {
         roomStorage[e.roomID - 1].inUse = true
       });
       setRoomStatus(roomStorage)
+
+
+
+      let room1History = await GetRFIDHistory(1)
+      var room1Usage1 = 0;
+      var room1Usage2 = 0;
+      var room1Usage3 = 0;
+      if (room1History.length != 0) {
+        room1Usage1 = getUsage(room1History, twoDaysAgo)
+        room1Usage2 = getUsage(room1History, yesterday)
+        room1Usage3 = getUsage(room1History, today)
+  
+      }
+  
+      let room2History = await GetRFIDHistory(2);
+      var room2Usage1 = 0;
+      var room2Usage2 = 0;
+      var room2Usage3 = 0;
+      if (room2History.length != 0) {
+        room2Usage1 = getUsage(room2History, twoDaysAgo)
+        room2Usage2 = getUsage(room2History, yesterday)
+        room2Usage3 = getUsage(room2History, today)
+      }
+  
+      let room3History = await GetRFIDHistory(2);
+      var room3Usage1 = 0;
+      var room3Usage2 = 0;
+      var room3Usage3 = 0;
+      if (room3History.length != 0) {
+        room3Usage1 = getUsage(room3History, twoDaysAgo)
+        room3Usage2 = getUsage(room3History, yesterday)
+        room3Usage3 = getUsage(room3History, today)
+      }
+  
+  
+  
+      let machine1History = await GetMachineHistory(1)
+      var machine1Usage = 0;
+  
+      if (machine1History.length != 0) {
+        machine1Usage = getUsage(machine1History, today)
+  
+      }
+  
+      let machine2History = await GetMachineHistory(2)
+      var machine2Usage = 0;
+  
+      if (machine2History.length != 0) {
+        machine2Usage = getUsage(machine2History, today)
+  
+      }
+  
+      let machine3History = await GetMachineHistory(1)
+      var machine3Usage = 0;
+  
+      if (machine3History.length != 0) {
+        machine3Usage = getUsage(machine3History, today)
+  
+      }
+  
+  
+      var RFIDHistory = await GetBookings()
+      if (RFIDHistory.length != 0) {
+        var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1) / 3)
+        var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2) / 3)
+        var roomUsage3 = Math.round((room1Usage3 + room2Usage3 + room3Usage3) / 3)
+        var MachineUsage = Math.round((machine1Usage + machine2Usage + machine3Usage) / 3)
+        var NoBookings1 = getBookingNO(RFIDHistory, twoDaysAgo)
+        var NoBookings2 = getBookingNO(RFIDHistory, yesterday)
+        var NoBookings3 = getBookingNO(RFIDHistory, today)
+  
+        let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth() + 1), yesterday.getDate() + "/" + (yesterday.getMonth() + 1), today.getDate() + "/" + (today.getUTCMonth() + 1)], y: [roomUsage1, roomUsage2, roomUsage3] }, title: "Overall Room Usage" }, {
+          data: {
+            type: 'bar', x:
+              [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth() + 1), yesterday.getDate() + "/" + (yesterday.getMonth() + 1), today.getDate() + "/" + (today.getUTCMonth() + 1)], y: [NoBookings1, NoBookings2, NoBookings3]
+          }, title: "Bookings Per Day"
+        }]
+        SetData(graphData, roomUsage3, MachineUsage)
+      }
     }    
+    
     const interval = setInterval(() => {
       fetchData();
     }, 4000);
     
-    // let roomName1 = null;
-    // roomName1 = GetRoom(1)
-
-    // if (roomName1 !== "") {
-    //   setRoomName("MRI 01", roomName1)
-    // }
 
 
-    //setRoomUse(roomName1,room1status,staff)
-
-
-    // let roomName2 = null;
-    // roomName2 = GetRoom(2)
-    // if (roomName2 !== "") {
-    //   setRoomName("MRI 02", roomName2)
-    // }
-
-    // let room1History = GetRFIDHistory(1)
-    // var room1Usage1 = 0;
-    // var room1Usage2 = 0;
-    // var room1Usage3 = 0;
-    // if (room1History.length != 0) {
-    //   room1Usage1 = getUsage(room1History, twoDaysAgo)
-    //   room1Usage2 = getUsage(room1History, yesterday)
-    //   room1Usage3 = getUsage(room1History, today)
-
-    // }
-
-    // let room2History = GetRFIDHistory(2);
-    // var room2Usage1 = 0;
-    // var room2Usage2 = 0;
-    // var room2Usage3 = 0;
-    // if (room2History.length != 0) {
-    //   room2Usage1 = getUsage(room2History, twoDaysAgo)
-    //   room2Usage2 = getUsage(room2History, yesterday)
-    //   room2Usage3 = getUsage(room2History, today)
-    // }
-
-    // let room3History = GetRFIDHistory(2);
-    // var room3Usage1 = 0;
-    // var room3Usage2 = 0;
-    // var room3Usage3 = 0;
-    // if (room3History.length != 0) {
-    //   room3Usage1 = getUsage(room3History, twoDaysAgo)
-    //   room3Usage2 = getUsage(room3History, yesterday)
-    //   room3Usage3 = getUsage(room3History, today)
-    // }
-
-
-
-    // let machine1History = GetMachineHistory(1)
-    // var machine1Usage = 0;
-
-    // if (machine1History.length != 0) {
-    //   machine1Usage = getUsage(machine1History, today)
-
-    // }
-
-    // let machine2History = GetMachineHistory(2)
-    // var machine2Usage = 0;
-
-    // if (machine2History.length != 0) {
-    //   machine2Usage = getUsage(machine2History, today)
-
-    // }
-
-    // let machine3History = GetMachineHistory(1)
-    // var machine3Usage = 0;
-
-    // if (machine3History.length != 0) {
-    //   machine3Usage = getUsage(machine3History, today)
-
-    // }
-
-
-    // let rfid1 = GetRoomStatus(1)
-    // console.log(rfid1)
-    // if (rfid1 != null || rfid1 != undefined) {
-    //   let roomstatus = true;
-    //   setRoomUse(roomName1, roomstatus)
-    // }
-
-    // let rfid2 = GetRoomStatus(2)
-    // console.log(rfid1)
-    // if (rfid2 != null || rfid2 != undefined) {
-    //   let roomstatus = true;
-    //   setRoomUse(roomName2, roomstatus)
-    // }
-
-
-
-
-
-    // var RFIDHistory = GetBookings()
-
-    // if (RFIDHistory.length != 0) {
-    //   var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1) / 3)
-    //   var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2) / 3)
-    //   var roomUsage3 = Math.round((room1Usage3 + room2Usage3 + room3Usage3) / 3)
-    //   var MachineUsage = Math.round((machine1Usage + machine2Usage + machine3Usage) / 3)
-    //   var NoBookings1 = getBookingNO(RFIDHistory, twoDaysAgo)
-    //   var NoBookings2 = getBookingNO(RFIDHistory, yesterday)
-    //   var NoBookings3 = getBookingNO(RFIDHistory, today)
-
-    //   let graphData = [{ data: { type: 'bar', x: [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth() + 1), yesterday.getDate() + "/" + (yesterday.getMonth() + 1), today.getDate() + "/" + (today.getUTCMonth() + 1)], y: [roomUsage1, roomUsage2, roomUsage3] }, title: "Overall Room Usage" }, {
-    //     data: {
-    //       type: 'bar', x:
-    //         [twoDaysAgo.getDate() + "/" + (twoDaysAgo.getMonth() + 1), yesterday.getDate() + "/" + (yesterday.getMonth() + 1), today.getDate() + "/" + (today.getUTCMonth() + 1)], y: [NoBookings1, NoBookings2, NoBookings3]
-    //     }, title: "Bookings Per Day"
-    //   }]
-    //   SetData(graphData, roomUsage3, MachineUsage)
-    //}
     return () => {
       clearInterval(interval);
     };

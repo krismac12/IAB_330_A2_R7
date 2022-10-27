@@ -18,7 +18,6 @@ import React, { useState, useEffect } from 'react';
 export async function GetRoom() {
     let res = await axios.get('http://localhost:3001/getRoom');
     return res.data
-
 }
 
 export function GetCamera(id) {
@@ -106,51 +105,25 @@ export function GetPatient(id) {
 }
 
 
-export function GetRFIDHistory(id) {
 
-    let History = [];
-    let data = [];
-    let getHistory = axios.get("http://localhost:3001/getRFIDHistory/" + id)
-        .then(res => {
-            data = res.data
-        }).catch(err => {
-            console.log(err)
-        })
-    History = data
-    return History
+
+export async function GetRFIDHistory(id) {
+    let res = await axios.get("http://localhost:3001/getRFIDHistory/" + id)
+    return res.data
 }
 
-export function GetMachineHistory(id) {
-
-    var History = [];
-    let data = [];
-    let getHistory = axios.get("http://localhost:3001/getMachineHistory/" + id)
-        .then(res => {
-            data = res.data
-        }).catch(err => {
-            console.log(err)
-        })
-    History = data
-    return History
+export async function GetMachineHistory(id) {
+    let res = await axios.get("http://localhost:3001/getMachineHistory/" + id)
+    return res.data
 }
 
-export function GetBookings() {
-
-    var History = [];
-    let data = [];
-    let getHistory = axios.get("http://localhost:3001/getBookings")
-        .then(res => {
-            data = res.data
-        }).catch(err => {
-            console.log(err)
-        })
-    History = data
-    return History
+export async function GetBookings() {
+    let res = await axios.get("http://localhost:3001/getBookings")
+    return res.data
 }
 
 
 export async function GetRoomStatus() {
-    let RFID = null;
     let res = await axios.get('http://localhost:3001/getRoomStatus/');
     return res.data
     
