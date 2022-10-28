@@ -107,10 +107,9 @@ app.get('/getRFIDHistory/:RoomID', function(req,res) {
 })
 
 
-app.get('/getStaff/:RFID', function(req,res) {
-    let sql = 'select * from Staff where RFID = ?';
-    var params = [req.params.RFID]
-    db.all(sql, params,res.body, (err, row)=>{
+app.get('/getStaff', function(req,res) {
+    let sql = 'select * from Staff';
+    db.all(sql,res.body, (err, row)=>{
         if(err)
         {
             return console.error(err);

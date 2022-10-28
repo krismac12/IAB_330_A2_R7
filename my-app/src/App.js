@@ -142,7 +142,6 @@ function App() {
   // Function to set graph data machine usage and room usage
   function SetData(graphData, roomUsage, machineUsage) {
     setCount(count+ 1)
-    console.log(graphData +" " + roomUsage +" " + machineUsage)
     if (count < 5) {
       setGraphData(graphData)
       setRoomUsage(roomUsage)
@@ -169,12 +168,12 @@ function App() {
       let inUse = await GetRoomStatus()
       let cameras = await GetCamera()
       let machines = await GetMachine()
-      console.log(cameras)
-      console.log(roomNames)
+      let staff = await GetStaff();
+      let patients = await GetPatient();
       //Adds 
       let i = 0;
       roomNames.forEach(e => {
-        roomStorage.push({ x: roomPos[i].x, y: roomPos[i].y, roomCount: 1, inUse: false, name: e.name, inUseBy: null, machines: [] })
+        roomStorage.push({ x: roomPos[i].x, y: roomPos[i].y, roomCount: 0, inUse: false, name: e.name, inUseBy: null, machines: [] })
         i++
       });
 
@@ -195,6 +194,22 @@ function App() {
         roomStorage[e.roomID - 1].machines.push(machine)
       });
 
+      staff.forEach(e => {
+        let rfid =(inUse.find(o => o.RFID === e.RFID))
+        if(rfid != undefined){
+          let fullName = e.FirstName +" " + e.LastName
+          roomStorage[rfid.roomID - 1].inUseBy = fullName
+        }
+
+      });
+      patients.forEach(e => {
+        let rfid =(inUse.find(o => o.RFID === e.RFID))
+        if(rfid != undefined){
+          let fullName = e.FirstName +" " + e.LastName
+          roomStorage[rfid.roomID - 1].inUseBy = fullName
+        }
+
+      });
       setRoomStatus(roomStorage)
 
 
@@ -258,7 +273,6 @@ function App() {
   
   
       var RFIDHistory = await GetBookings()
-      console.log(RFIDHistory)
       if (RFIDHistory.length != 0) {
         var roomUsage1 = Math.round((room1Usage1 + room2Usage1 + room3Usage1) / 3)
         var roomUsage2 = Math.round((room1Usage2 + room2Usage2 + room3Usage2) / 3)

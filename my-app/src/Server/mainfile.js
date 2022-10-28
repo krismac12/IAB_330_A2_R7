@@ -31,32 +31,9 @@ export async function GetMachine(id) {
     return res.data
 }
 
-export function GetPatient(id) {
-    let patient = {
-        ID: 0,
-        FirstName: "",
-        LastName: "",
-        RFID: 0
-    }
-    const [ID, setID] = useState(null);
-    const [FirstName, setFirstName] = useState(null);
-    const [LastName, setLastName] = useState(null);
-    const [RFID, setRFID] = useState(null);
-    const getPatient = axios.get("http://localhost:3001/getPatient")
-        .then(res => {
-            setFirstName(res.data[id - 1].FirstName)
-            setID(res.data[id - 1].PatientID)
-            setLastName(res.data[id - 1].LastName)
-            setRFID(res.data[id - 1].RFID)
-        }).catch(err => {
-            console.log(err)
-        })
-
-    patient.ID = ID;
-    patient.FirstName = FirstName;
-    patient.LastName = LastName;
-    patient.RFID = RFID;
-    return patient
+export async function GetPatient(RFID) {
+    let res = await axios.get('http://localhost:3001/getPatient/');
+    return res.data
 }
 
 
@@ -84,13 +61,7 @@ export async function GetRoomStatus() {
     
 }
 
-export function GetStaff(RFID) {
-    const [FullName, setName] = useState(null);
-    let getHistory = axios.get("http://localhost:3001/getStaff/" + RFID)
-        .then(res => {
-            setName(res.data.FirstName + " " + res.data.LastName)
-        }).catch(err => {
-            console.log(err)
-        })
-    return FullName
+export async function GetStaff(RFID) {
+    let res = await axios.get('http://localhost:3001/getStaff/');
+    return res.data
 }
