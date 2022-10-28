@@ -3,11 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import MapPage from "./Pages/MapPage";
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
-import { GetRoom, GetCamera, GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory, GetBookings, GetRoomStatus, GetStaff } from "./Server/mainfile"
+import { GetRoom, GetCamera, GetMachine, GetPatient, GetRFIDHistory, GetMachineHistory, GetBookings, GetRoomStatus, GetStaff } from "./mainfile"
 
 
-var count = 0;
 var count2 = 0;
 
 function getStaffName(RFID) {
@@ -152,15 +150,10 @@ function App() {
 
   let roomPos = [{ x: "50px", y: "30px" }, { x: "140px", y: "30px" }, { x: "200px", y: "160px" }]
   const [count, setCount] = useState(0);
-  // setInterval(() => {
-  //   setCount(count + 1);
-  // }, 100000);
-  const [time, setTime] = useState(Date.now());
 
-  //console.log(await GetRoomee())
   useEffect(() => {
     async function fetchData() {
-      console.log('Interval triggered');
+      console.log('Update Client');
       let roomStorage = [];
 
       let roomNames = await GetRoom();
